@@ -1,7 +1,44 @@
 const rockBtn= document.getElementById('rock');
 const paperBtn= document.getElementById('paper');
 const scisorBtn= document.getElementById('scisor');
+const PTag = document.getElementById("rock-p");
+const div = document.getElementById('round');
 
+let playerBet = '';
+let computerScore = 0;
+let humanScore = 0;
+
+
+function displayScore () {
+    const score = document.createElement('p');
+    score.innerText = `Computer : ${computerScore} & Human: ${humanScore}`;
+    div.appendChild(score);
+}
+
+function displayResult (result){
+   const p = document.createElement('p');
+   p.innerText = `${result}`;
+   div.appendChild(p);
+}
+
+function checker (computerSelection, playerBet) {
+    if (computerSelection===playerBet){
+        displayResult('Tie game');
+    return 'tie game'
+    } else if (computerSelection==='rock' && playerBet === 'paper'|| 
+        computerSelection==='paper' && playerBet === 'scisor'||
+        computerSelection==='scisor' && playerBet === 'rock' ){
+        humanScore++;
+            displayResult(`${playerBet} beats ${computerSelection}`)
+    return `You win ${playerBet} beats ${computerSelection}`
+    } else if (computerSelection==='paper' && playerBet === 'rock'|| 
+        computerSelection==='scisor' && playerBet === 'paper'||
+        computerSelection==='rock' && playerBet === 'scisor'){
+        computerScore++;
+        displayResult(`${computerSelection} beats ${playerBet}`)
+    return `You lose ${computerSelection} beats ${playerBet}`; 
+    }
+}
 
 
 function computerPlay () {
@@ -10,49 +47,32 @@ function computerPlay () {
     return result;
 }
 
-
 function game(computerSelection, playerBet){
-   if (computerSelection===playerBet){
-       console.log('tie game');
-       return 'tie game'
-   } else if (computerSelection==='rock' && playerBet === 'paper'|| 
-              computerSelection==='paper' && playerBet === 'scisor'||
-              computerSelection==='scisor' && playerBet === 'rock' ){
-       console.log(`You win ${playerBet} beats ${computerSelection}`);
-       return `You win ${playerBet} beats ${computerSelection}`
-   } else if (computerSelection==='paper' && playerBet === 'rock'|| 
-   computerSelection==='scisor' && playerBet === 'paper'||
-   computerSelection==='rock' && playerBet === 'scisor'){
-       console.log(`You lose ${computerSelection} beats ${playerBet}`);
-       return `You lose ${computerSelection} beats ${playerBet}`; 
-   }else{
-       console.log("please bet");
-       return;
-   }
-}
-
-let count = 0;
-for (let i = 0; i<=4; i++){
-    const computerSelection =  computerPlay();
-    rockBtn.addEventListener('click', () => playerBet='rock')
-    paperBtn.addEventListener('click', () => playerBet= 'paper');
-    scisorBtn.addEventListener('click', () => playerBet= 'scisor');
-    game(computerSelection, playerBet); 
-    if (computerSelection==='rock' && playerBet === 'paper'|| 
-    computerSelection==='paper' && playerBet === 'scisor'||
-    computerSelection==='scisor' && playerBet === 'rock' ){
-        count++;
-    }else if(computerSelection==='paper' && playerBet === 'rock'|| 
-    computerSelection==='scisor' && playerBet === 'paper'||
-    computerSelection==='rock' && playerBet === 'scisor' ){
-        count--
+    if (computerScore===5) {
+        PTag.innerText ='computer win';
+        return
+    }  else if (humanScore===5){
+        PTag.innerText ='human win';
+        return
     }
-    
-}
-if (count >=3){
-    console.log("human win")
-}else {
-    console.log("computer win") 
-}
+    checker(computerSelection, playerBet);
+    }
 
-
+rockBtn.addEventListener('click', ()=> {
+    playerBet = 'rock';
+    computerSelection = computerPlay();
+    game(playerBet, computerSelection);
+    displayScore()
+})
+paperBtn.addEventListener('click', ()=> {
+    playerBet = 'paper';
+    computerSelection = computerPlay();
+    game(playerBet, computerSelection);
+    displayScore()
+});
+scisorBtn.addEventListener('click',()=> {
+    playerBet = 'scisor';
+    computerSelection = computerPlay();
+    game(playerBet, computerSelection);
+    displayScore()
+});
