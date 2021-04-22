@@ -4,14 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Rock Paper Scisors</title>
 </head>
 <body>
-    <div id="round"></div>
-    <p id="rock-p"></p>
-    <button id="rock">Rock</button>
-    <button id="paper">Paper</button>
-    <button id="scisor">Scisor</button>
+    <div class="surround">
+        <h1>Can You Beat The Computer</h1>
+        <div class="game-container">
+            <div class="winner">
+                <h1 id='winner'>COMPUTER vs HUMAN</h1>
+            </div>
+            <div class="score">
+                <h2 id="score">Computer 0 - 0 Human </h2>
+            </div>
+            <div class="result">
+                <p id="para"></p>
+            </div>
+            <div class="buttons">
+                <button id="rock">Rock</button>
+                <button id="paper">Paper</button>
+                <button id="scisor">Scisor</button>
+            </div>
+        </div>
+        <div class="reset-container">
+            <button class="new-game">New Game</button>
+            <button class="reset">Reset</button>
+        </div>
+        
+    </div>
+   
+
+    
     <script src="./script.js"></script>
 </body>
 </html>

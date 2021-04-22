@@ -1,78 +1,103 @@
 const rockBtn= document.getElementById('rock');
 const paperBtn= document.getElementById('paper');
 const scisorBtn= document.getElementById('scisor');
-const PTag = document.getElementById("rock-p");
-const div = document.getElementById('round');
+const score = document.getElementById('score');
+const para = document.getElementById('para');
+const winner = document.getElementById('winner');
+const newGameBtn = document.querySelector('.new-game');
+const resetBtn = document.querySelector('.reset');
 
+// initial state
 let playerBet = '';
 let computerScore = 0;
 let humanScore = 0;
+const resultArray = ['rock', 'paper', 'scisor'];
+let array = [ para,score,rockBtn,paperBtn,scisorBtn];
 
 
+
+// display the score 
 function displayScore () {
-    const score = document.createElement('p');
-    score.innerText = `Computer : ${computerScore} & Human: ${humanScore}`;
-    div.appendChild(score);
+    score.innerText = `Computer ${computerScore} - ${humanScore} Human `;
 }
 
+// display the result
 function displayResult (result){
-   const p = document.createElement('p');
-   p.innerText = `${result}`;
-   div.appendChild(p);
+   para.innerText = `${result}`;
 }
 
+// check The logic
 function checker (computerSelection, playerBet) {
+    if (computerScore===5 || humanScore===5) return
     if (computerSelection===playerBet){
-        displayResult('Tie game');
-    return 'tie game'
-    } else if (computerSelection==='rock' && playerBet === 'paper'|| 
+      return  displayResult('Tie game');
+    }
+    if (computerSelection==='rock' && playerBet === 'paper'|| 
         computerSelection==='paper' && playerBet === 'scisor'||
         computerSelection==='scisor' && playerBet === 'rock' ){
         humanScore++;
-            displayResult(`${playerBet} beats ${computerSelection}`)
-    return `You win ${playerBet} beats ${computerSelection}`
-    } else if (computerSelection==='paper' && playerBet === 'rock'|| 
+        displayResult(`${playerBet} beats ${computerSelection}`);
+        return displayScore();
+    }
+    if (computerSelection==='paper' && playerBet === 'rock'|| 
         computerSelection==='scisor' && playerBet === 'paper'||
         computerSelection==='rock' && playerBet === 'scisor'){
         computerScore++;
         displayResult(`${computerSelection} beats ${playerBet}`)
-    return `You lose ${computerSelection} beats ${playerBet}`; 
+        return displayScore();
     }
 }
 
-
+// Computer Play with random bet
 function computerPlay () {
-    let resultArray = ['rock', 'paper', 'scisor'];
     let result = resultArray[Math.floor(Math.random()*3)]
     return result;
 }
 
-function game(computerSelection, playerBet){
-    if (computerScore===5) {
-        PTag.innerText ='computer win';
-        return
-    }  else if (humanScore===5){
-        PTag.innerText ='human win';
-        return
-    }
+// Game launcher
+function game(playerBet){
+    computerSelection = computerPlay();
     checker(computerSelection, playerBet);
-    }
+}
 
+// Declare the winner
+function showWinner(){
+    if (computerScore===5) {
+        array.forEach(elem => elem.hidden=true)
+      return  winner.innerText ='computer win'.toUpperCase();
+        
+    } 
+     if (humanScore===5){
+        array.forEach(elem => elem.hidden=true)
+     return  winner.innerText ='human win'.toUpperCase();
+        
+    }
+}
+
+// Reset game
+
+function reset (){
+ computerScore = 0;
+ humanScore = 0;
+ array.forEach(elem=> elem.hidden=false)
+ displayScore();
+ displayResult('');
+}
+
+
+// Even listeners
 rockBtn.addEventListener('click', ()=> {
-    playerBet = 'rock';
-    computerSelection = computerPlay();
-    game(playerBet, computerSelection);
-    displayScore()
-})
-paperBtn.addEventListener('click', ()=> {
-    playerBet = 'paper';
-    computerSelection = computerPlay();
-    game(playerBet, computerSelection);
-    displayScore()
+    game('rock');
+    showWinner();
 });
-scisorBtn.addEventListener('click',()=> {
-    playerBet = 'scisor';
-    computerSelection = computerPlay();
-    game(playerBet, computerSelection);
-    displayScore()
+paperBtn.addEventListener('click', ()=>{ 
+    game('paper')
+    showWinner();
 });
+scisorBtn.addEventListener('click', ()=> {
+    game('scisor');
+    showWinner();
+});
+
+resetBtn.addEventListener('click', reset);
+newGameBtn.addEventListener('click', reset);
